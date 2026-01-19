@@ -8,12 +8,12 @@ export default function Home() {
 
   const handleChange = (event) => {
     setValue(event.target.value);
-    console.log(event);
+    console.log("hi");
   };
 
   const addTask = () => {
     const newTask = {
-      id: 1,
+      id: tasks.length,
       value,
       checked: false,
     };
@@ -23,12 +23,16 @@ export default function Home() {
 
   const toggleTaskCheck = (taskId) => {
     const newTasks = tasks.map((task) => {
-      console.log("sda we", task);
-
       if (taskId === task.id) {
-        return (task.checked = true);
+        return {
+          ...task,
+          checked: true,
+        };
+      } else {
+        return task;
       }
     });
+    setTasks(newTasks);
   };
 
   return (
