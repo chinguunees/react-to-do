@@ -77,9 +77,11 @@ export default function Home() {
           );
         })}
       </div>
-      <div className="flex border-t-1 w-[345px] justify-between items-center border-[#E4E4E7] mt-[20px]">
+      <div
+        className={`flex ${tasks.length >= 1 ? "border-t mt-[20px] flex gap-[85px] justify-between" : ""} w-[345px] justify-center items-center border-[#E4E4E7] `}
+      >
         <TaskAllList tasks={tasks} />
-        <Clear clearCompleted={clearCompleted} />
+        <Clear clearCompleted={clearCompleted} tasks={tasks} />
       </div>
       <Copyright />
     </div>
