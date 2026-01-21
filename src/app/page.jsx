@@ -1,6 +1,12 @@
 "use client";
 import { useState } from "react";
-import Image from "next/image";
+
+import { Task } from "@/components/Task";
+import { TodoInput } from "@/components/TodoInput";
+import { FilterButtons } from "@/components/FilterButtons";
+import { TaskAllList } from "@/components/taskAllList";
+import { Clear } from "@/components/Clear";
+import { Copyright } from "@/components/Copyright";
 
 export default function Home() {
   const [value, setValue] = useState("");
@@ -24,6 +30,7 @@ export default function Home() {
       checked: false,
     };
     setTasks((prev) => [...prev, newTask]);
+
     setValue("");
   };
 
@@ -53,90 +60,28 @@ export default function Home() {
     setTasks(deleteAll);
   };
 
-  const taskAllList = () => {
-    const taskCompleted = tasks.filter((task) => task.checked).length;
-    setTasks(taskCompleted);
-  };
-
   return (
-    <div className="flex flex-col justify-center items-center ml-50 mt-15 bg-white w-[377px] pt-[24px] pb-15 pl-[16px] pr-[16px] rounded-xl text-black shadow-[0px_4px_6px_0px_rgba(0,_0,_0,_0.1)]">
+    <div className="flex flex-col justify-center items-center ml-200 mt-25 bg-white w-[377px] pt-[24px] pb-[16px] pl-[16px] pr-[16px] rounded-xl text-black shadow-[0px_4px_6px_0px_rgba(0,_0,_0,_0.1)]">
       <h1 className="text-black font-semibold text-2xl">To-Do list</h1>
-      <div className="flex gap-[6px] mt-[20px] mb-[20px]">
-        <input
-          type="text"
-          placeholder="   Add a new task"
-          className="border h-[40px] w-[280px] rounded-sm text-[#6B7280] border-[#E4E4E7]"
-          value={value}
-          onChange={() => handleChange(event)}
-        />
-        <button
-          className="bg-[#3C82F6] text-white h-[40px] w-[59px] rounded-sm"
-          onClick={addTask}
-        >
-          Add
-        </button>
-      </div>
-      <div className="flex gap-[6px] text-black items-center w-[345px] ">
-        <button
-          className="bg-[#3C82F6] h-[32px] flex justify-center items-center w-[38px] rounded-[6px] text-white text-[12px]"
-          onClick={() => filterTodos("all")}
-        >
-          All
-        </button>
-        <button
-          className="w-[60px] h-[32px] bg-[#F3F4F6] rounded-[6px] text-[#363636] text-[12px]"
-          onClick={() => filterTodos("active")}
-        >
-          Active
-        </button>
-        <button
-          className="w-[87px] h-[32px] bg-[#F3F4F6] rounded-[6px] text-[#363636] text-[12px]"
-          onClick={() => filterTodos("completed")}
-        >
-          Completed
-        </button>
-      </div>
+      <TodoInput handleChange={handleChange} addTask={addTask} value={value} />
+      <FilterButtons key={tasks.id} filter={filter} filterTodos={filterTodos} />
       <div>
-        {filteredTasks.map((task, index) => {
+        {filteredTasks.map((task) => {
           return (
-            <div
-              className="flex mt-[20px] rounded-md justify-between items-center gap-5 bg-[#F9FAFB] w-[345px] h-[62px]"
-              key={index}
-            >
-              <input
-                type="checkbox"
-                className="text-black bg-[#F9FAFB] w-[34px] h-[20px] flex flex-col rounded-xl  "
-                key={index}
-                onChange={() => toggleTaskCheck(task.id)}
-                checked={task.checked}
-              />
-              <p className={`${task.checked && "line-through"} `}>
-                {task.value}
-              </p>
-              <button
-                className="text-[#EF4444] w-[67px] h-[30px] bg-red-100 rounded-md mr-2"
-                onClick={() => deleteTask(task.id)}
-              >
-                Delete
-              </button>
-            </div>
+            <Task
+              key={task.id}
+              task={task}
+              deleteTask={deleteTask}
+              toggleTaskCheck={toggleTaskCheck}
+            />
           );
         })}
       </div>
       <div className="flex border-t-1 w-[345px] justify-between items-center border-[#E4E4E7] mt-[20px]">
-        <p className="text-[14px] mt-5 text-[#6B7280]">
-          Tasks completed {tasks.length}
-        </p>
-        <button
-          className="text-[#EF4444] text-[14px] mt-5"
-          onClick={clearCompleted}
-        >
-          Clear Completed
-        </button>
+        <TaskAllList tasks={tasks} />
+        <Clear clearCompleted={clearCompleted} />
       </div>
-      <p className="mt-[40px] text-xs text-[#6B7280]">
-        Powered by <span className="text-[#3B73ED]">Pinecone Academy</span>
-      </p>
+      <Copyright />
     </div>
   );
 }
