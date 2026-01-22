@@ -60,6 +60,12 @@ export default function Home() {
     setTasks(deleteAll);
   };
 
+  const confirmation = (taskId) => {
+    if (confirm("Delete Task?")) {
+      deleteTask(taskId);
+    }
+  };
+
   return (
     <div className="flex flex-col justify-center items-center ml-200 mt-25 bg-white w-[377px] pt-[24px] pb-[16px] pl-[16px] pr-[16px] rounded-xl text-black shadow-[0px_4px_6px_0px_rgba(0,_0,_0,_0.1)]">
       <h1 className="text-black font-semibold text-2xl">To-Do list</h1>
@@ -71,7 +77,7 @@ export default function Home() {
             <Task
               key={task.id}
               task={task}
-              deleteTask={deleteTask}
+              deleteTask={confirmation}
               toggleTaskCheck={toggleTaskCheck}
             />
           );
